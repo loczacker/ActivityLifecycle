@@ -1,14 +1,12 @@
 package com.rikkei.training.activity
 
 import android.content.Intent
+import android.content.res.AssetFileDescriptor
+import android.media.AudioManager
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
 import com.rikkei.training.activity.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -38,8 +36,12 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStartA: ")
-        var mediaPlayer = MediaPlayer.create(this, R.raw.loco)
-        mediaPlayer.start()
+        var mediaPlayer = MediaPlayer()
+        val afd: AssetFileDescriptor = getResources().openRawResourceFd(R.raw.loco)
+        mediaPlayer.setDataSource(afd)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener { player -> player.start() }
+
     }
 
     override fun onResume() {
