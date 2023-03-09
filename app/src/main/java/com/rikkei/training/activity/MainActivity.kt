@@ -1,8 +1,6 @@
 package com.rikkei.training.activity
 
 import android.content.Intent
-import android.content.res.AssetFileDescriptor
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +13,10 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var mediaPlayer: MediaPlayer
+
+    private var currentPosition: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +38,9 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStartA: ")
-        var mediaPlayer = MediaPlayer()
-        val afd: AssetFileDescriptor = getResources().openRawResourceFd(R.raw.loco)
-        mediaPlayer.setDataSource(afd)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener { player -> player.start() }
-
+        mediaPlayer = MediaPlayer.create(this, R.raw.loco)
+        mediaPlayer.start()
+        mediaPlayer.seekTo(currentPosition)
     }
 
     override fun onResume() {
@@ -52,6 +51,8 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPauseA: ")
+        mediaPlayer.pause()
+        currentPosition = mediaPlayer.currentPosition
     }
 
     override fun onStop() {
@@ -67,6 +68,9 @@ class MainActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         Log.d(TAG, "onRestartA: ")
+        mediaPlayer.seekTo(currentPosition)
+        mediaPlayer.start()
+
     }
 
 }

@@ -1,6 +1,7 @@
 package com.rikkei.training.activity
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,9 @@ class ActivityB : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityBBinding
+    private lateinit var mediaPlayerB: MediaPlayer
+
+    private var mediaB: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,8 @@ class ActivityB : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStartB: ")
+        mediaPlayerB = MediaPlayer.create(this, R.raw.loveme)
+        mediaPlayerB.start()
     }
 
     override fun onResume() {
@@ -43,6 +49,8 @@ class ActivityB : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPauseB: ")
+        mediaPlayerB.pause()
+        mediaB = mediaPlayerB.getCurrentPosition()
     }
 
     override fun onStop() {
@@ -58,6 +66,8 @@ class ActivityB : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         Log.d(TAG, "onRestartB: ")
+        mediaPlayerB.seekTo(mediaB)
+
     }
 
 }
